@@ -3,12 +3,23 @@ spring:
     name: kakao-bank-pre-test
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test;
+    url: jdbc:h2:mem:testdb
     username: sa
     password:
   h2:
     console:
       enabled: true
       path: /h2-console
-#      settings:
-#        web-allow-others: true
+      settings:
+        web-allow-others: true
+kakao:
+  api:
+    protocol: https
+    host: dapi.kakao.com
+    appkey: e311f29c3b111e7c0539b3f9be6caea0
+    blogSearch:
+      path: /v2/search/blog
+
+logging:
+  level:
+    root: trace
