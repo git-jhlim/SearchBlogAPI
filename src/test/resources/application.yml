@@ -9,6 +9,6 @@ spring:
 
 logging:
   level:
-    com.test.kakaobank: trace
+    com.test.searchAPI: trace
     org.springframework: error
     org.springframework.web: trace

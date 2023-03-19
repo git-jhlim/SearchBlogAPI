@@ -1,11 +1,10 @@
-package com.test.kakaobank
+package com.test.searchAPI
 
-import com.test.kakaobank.domain.kakao.model.BlogSearchParams
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class KakaoBankApplicationTests {
+class SearchAPIApplicationTests {
 
     @Test
     fun contextLoads() {

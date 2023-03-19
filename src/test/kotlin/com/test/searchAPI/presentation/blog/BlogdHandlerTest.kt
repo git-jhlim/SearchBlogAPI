@@ -1,11 +1,13 @@
-package com.test.kakaobank.presentation
+package com.test.searchAPI.presentation.blog
 
-import com.test.kakaobank.application.SearchQueryService
-import com.test.kakaobank.presentation.exception.APIErrorCode
-import com.test.kakaobank.presentation.exception.InvalidParameterException
+import com.test.searchAPI.application.blog.BlogQueryService
+import com.test.searchAPI.presentation.blog.exception.BlogErrorCode
+import com.test.searchAPI.presentation.blog.exception.InvalidPageException
+import com.test.searchAPI.presentation.blog.exception.InvalidSizeException
+import com.test.searchAPI.presentation.exception.APIErrorCode
+import com.test.searchAPI.presentation.exception.InvalidParameterException
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -16,18 +18,17 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.reactive.function.server.MockServerRequest
-import org.springframework.web.reactive.function.server.ServerRequest
 
 @ExtendWith(MockKExtension::class)
-class SearchHandlerTest {
+class BlogdHandlerTest {
 
     @MockK
-    lateinit var searchQueryService: SearchQueryService
-    private lateinit var searchHandler: SearchHandler
+    lateinit var blogQueryService: BlogQueryService
+    private lateinit var blogHandler: BlogHandler
 
     @BeforeEach
     fun setup() {
-        searchHandler = SearchHandler(searchQueryService)
+        blogHandler = BlogHandler(blogQueryService)
     }
 
     @Test
@@ -36,7 +37,7 @@ class SearchHandlerTest {
 
         val exception = assertThrows<InvalidParameterException> {
             runBlocking {
-                searchHandler.searchBlog(request)
+                blogHandler.searchBlog(request)
             }
         }
 
@@ -53,7 +54,7 @@ class SearchHandlerTest {
 
         val exception = assertThrows<InvalidParameterException> {
             runBlocking {
-                searchHandler.searchBlog(request)
+                blogHandler.searchBlog(request)
             }
         }
 
@@ -68,14 +69,14 @@ class SearchHandlerTest {
             .queryParam("sorting", "ACCURACY")
             .build()
 
-        coEvery { searchQueryService.searchBlog(any()) } returns mockk()
+        coEvery { blogQueryService.searchBlog(any()) } returns mockk()
 
         val response = runBlocking {
-            searchHandler.searchBlog(request)
+            blogHandler.searchBlog(request)
         }
 
         assert(response.statusCode() == HttpStatus.OK)
-        coVerify { searchQueryService.searchBlog(any()) }
+        coVerify { blogQueryService.searchBlog(any()) }
     }
 
     @Test
@@ -86,14 +87,13 @@ class SearchHandlerTest {
             .queryParam("page", "0")
             .build()
 
-        val exception = assertThrows<InvalidParameterException> {
+        val exception = assertThrows<InvalidPageException> {
             runBlocking {
-                searchHandler.searchBlog(request)
+                blogHandler.searchBlog(request)
             }
         }
 
-        assert(exception.errorCode == APIErrorCode.INVALID_PARAMETER)
-        assert(exception.arg == "page")
+        assert(exception.errorCode == BlogErrorCode.PAGE_HAS_INVALID_NUMBER)
     }
 
     @Test
@@ -104,27 +104,12 @@ class SearchHandlerTest {
             .queryParam("size", "-1")
             .build()
 
-        val exception = assertThrows<InvalidParameterException> {
+        val exception = assertThrows<InvalidSizeException> {
             runBlocking {
-                searchHandler.searchBlog(request)
+                blogHandler.searchBlog(request)
             }
         }
 
-        assert(exception.errorCode == APIErrorCode.INVALID_PARAMETER)
-        assert(exception.arg == "size")
-    }
-
-    @Test
-    fun `인기 검색어 조회`() {
-        val request = mockk<ServerRequest>()
-
-        coEvery { searchQueryService.getPopularKeywords() } returns mockk()
-
-        val response = runBlocking {
-            searchHandler.getPopularKeywords(request)
-        }
-
-        assert(response.statusCode() == HttpStatus.OK)
-        coVerify { searchQueryService.getPopularKeywords() }
+        assert(exception.errorCode == BlogErrorCode.SIZE_HAS_INVALID_NUMBER)
     }
 }
