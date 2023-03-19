@@ -1,1 +1,1 @@
-rootProject.name = "kakaoBank"
+rootProject.name = "searchAPI"
