@@ -1,5 +1,8 @@
 package com.test.kakaobank.domain.kakao
 
+import com.test.kakaobank.common.exception.BadRequestException
+import com.test.kakaobank.common.extension.toModel
+import com.test.kakaobank.domain.kakao.exception.KakaoExceptionResponse
 import com.test.kakaobank.domain.kakao.model.BlogSearchParams
 import com.test.kakaobank.domain.kakao.model.KakaoBlog
 import com.test.kakaobank.domain.kakao.model.KakaoSearchResponse
@@ -31,12 +34,10 @@ class KakaoSearchDomainService(
             .doOnError {
                 when (it) {
                     is WebClientResponseException -> {
-                        if (it.statusCode.is5xxServerError) {
-                            throw it
-                        }
+                        if (it.statusCode.is5xxServerError)  throw it
 
                         if (it.statusCode.is4xxClientError) {
-                            throw it
+                            throw BadRequestException(mapOf("info" to (it.responseBodyAsString.toModel<KakaoExceptionResponse>())))
                         }
                     }
                 }

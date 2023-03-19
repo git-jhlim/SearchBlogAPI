@@ -3,13 +3,11 @@ package com.test.kakaobank.presentation
 import com.test.kakaobank.application.SearchQueryService
 import com.test.kakaobank.common.enum.BlogSearchSort
 import com.test.kakaobank.common.extension.queryParamOrThrow
-import com.test.kakaobank.common.extension.queryParamToIntOrNull
+import com.test.kakaobank.common.extension.queryParamToPositiveIntOrNull
 import com.test.kakaobank.presentation.exception.InvalidParameterException
 import com.test.kakaobank.presentation.model.BlogSearchRequest
-import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
-import java.lang.RuntimeException
 
 @Component
 class SearchHandler(
@@ -22,9 +20,8 @@ class SearchHandler(
             ?.let {
                 BlogSearchSort.getBy(it) ?: throw InvalidParameterException("sorting")
             }
-        val page = request.queryParamToIntOrNull("page")
-        val size = request.queryParamToIntOrNull("size")
-
+        val page = request.queryParamToPositiveIntOrNull("page")
+        val size = request.queryParamToPositiveIntOrNull("size")
 
         val param = BlogSearchRequest.of(keyword, url, sorting, page, size)
         return ServerResponse.ok().bodyValueAndAwait(

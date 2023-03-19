@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.test.kakaobank.common.extension.objectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
@@ -21,13 +22,6 @@ import java.time.format.DateTimeFormatter
 @Configuration
 class WebClientConfig {
 
-    private val objectMapper = ObjectMapper()
-        .registerModule(KotlinModule.Builder().build())
-        .registerModule(
-            JavaTimeModule().apply {
-                addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
-            }
-        )
     @Bean
     fun getWebClient(): WebClient {
         return WebClient.builder()

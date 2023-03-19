@@ -24,7 +24,7 @@ dependencies {
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-    runtimeOnly("com.h2database:h2")
+    runtimeOnly("com.h2database:h2:2.1.214")
 
     //localdatetime
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
@@ -34,6 +34,7 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
+    testImplementation("io.mockk:mockk:1.13.4")
 }
 
 tasks.withType<KotlinCompile> {
