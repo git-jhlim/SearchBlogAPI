@@ -1,6 +1,6 @@
 package com.test.kakaobank.common.extension
 
-import com.test.kakaobank.presentation.error.InvalidArgumentException
+import com.test.kakaobank.presentation.exception.InvalidParameterException
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.queryParamOrNull
 
@@ -9,5 +9,5 @@ fun ServerRequest.queryParamToIntOrNull(name: String): Int? {
 }
 
 fun ServerRequest.queryParamOrThrow(name: String): String {
-    return queryParamOrNull(name) ?: throw InvalidArgumentException(name)
+    return queryParamOrNull(name) ?: throw InvalidParameterException(name)
 }

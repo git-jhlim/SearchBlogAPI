@@ -4,10 +4,12 @@ import com.test.kakaobank.application.SearchQueryService
 import com.test.kakaobank.common.enum.BlogSearchSort
 import com.test.kakaobank.common.extension.queryParamOrThrow
 import com.test.kakaobank.common.extension.queryParamToIntOrNull
-import com.test.kakaobank.presentation.error.InvalidArgumentException
+import com.test.kakaobank.presentation.exception.InvalidParameterException
 import com.test.kakaobank.presentation.model.BlogSearchRequest
+import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
+import java.lang.RuntimeException
 
 @Component
 class SearchHandler(
@@ -18,7 +20,7 @@ class SearchHandler(
         val url = request.queryParamOrNull("url")
         val sorting = request.queryParamOrNull("sorting")
             ?.let {
-                BlogSearchSort.getBy(it) ?: throw InvalidArgumentException("sorting")
+                BlogSearchSort.getBy(it) ?: throw InvalidParameterException("sorting")
             }
         val page = request.queryParamToIntOrNull("page")
         val size = request.queryParamToIntOrNull("size")
@@ -27,6 +29,12 @@ class SearchHandler(
         val param = BlogSearchRequest.of(keyword, url, sorting, page, size)
         return ServerResponse.ok().bodyValueAndAwait(
             searchQueryService.searchBlog(param.toBlogSearchModel())
+        )
+    }
+
+    suspend fun getPopularKeywords(request: ServerRequest): ServerResponse {
+        return ServerResponse.ok().bodyValueAndAwait(
+            searchQueryService.getPopularKeywords()
         )
     }
 

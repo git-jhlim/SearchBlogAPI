@@ -26,8 +26,11 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     runtimeOnly("com.h2database:h2")
 
-    //localdateTime
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.3")
+    //localdatetime
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2")
+
+    //macos dnsserver error 관련
+    implementation("io.netty:netty-resolver-dns-native-macos")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

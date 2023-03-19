@@ -13,6 +13,7 @@ class SearchRouter(private val searchHandler: SearchHandler) {
         return coRouter {
             (accept(MediaType.APPLICATION_JSON) and "/blog/search").nest {
                 GET("", searchHandler::searchBlog)
+                GET("/popular-keywords", searchHandler::getPopularKeywords)
             }
         }
     }
