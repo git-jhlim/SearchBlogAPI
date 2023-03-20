@@ -4,7 +4,7 @@ import com.test.searchAPI.application.blog.model.BlogSearchModel
 import com.test.searchAPI.application.blog.model.BlogSearchResponse
 import com.test.searchAPI.common.model.PageResponse
 import com.test.searchAPI.domain.kakao.KakaoSearchDomainService
-import com.test.searchAPI.domain.keyword.event.PopularKeywordEvent
+import com.test.searchAPI.domain.keyword.event.SearchKeywordEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
@@ -15,7 +15,7 @@ class BlogQueryService(
 ) {
     suspend fun searchBlog(searchModel: BlogSearchModel): PageResponse<BlogSearchResponse> {
         val result = kakaoSearchDomainService.searchBlog(searchModel.toBlogSearchParams())
-            .also { applicationEventPublisher.publishEvent(PopularKeywordEvent(searchModel.keyword)) }
+            .also { applicationEventPublisher.publishEvent(SearchKeywordEvent(searchModel.keyword)) }
 
         return PageResponse.convert(result) { BlogSearchResponse.of(it) }
     }

@@ -18,7 +18,7 @@ import org.springframework.mock.web.reactive.function.server.MockServerRequest
 import org.springframework.web.reactive.function.server.ServerRequest
 
 @ExtendWith(MockKExtension::class)
-class KeywordHandlerTest {
+class SearchKeywordHandlerTest {
 
     @MockK
     lateinit var keywordQueryService: KeywordQueryService

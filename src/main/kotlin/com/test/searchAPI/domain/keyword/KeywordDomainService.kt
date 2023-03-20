@@ -1,22 +1,16 @@
 package com.test.searchAPI.domain.keyword
 
-import com.test.searchAPI.domain.keyword.entity.PopularKeyword
-import com.test.searchAPI.domain.keyword.repository.PopularKeywordRepository
+import com.test.searchAPI.domain.keyword.model.PopularKeyword
+import com.test.searchAPI.domain.keyword.repository.SearchKeywordRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
 class KeywordDomainService(
-    private val popularKeywordRepository: PopularKeywordRepository,
+    private val searchKeywordRepository: SearchKeywordRepository,
 ) {
-    fun addSearchCount(keyword: String) {
-        popularKeywordRepository.findByKeyword(keyword)
-            ?.also { it.addSearchCount() }
-            ?: popularKeywordRepository.save(PopularKeyword(keyword))
-    }
-
+    @Transactional(readOnly = true)
     fun getPopularKeyword(): List<PopularKeyword> {
-        return popularKeywordRepository.findTop10ByOrderBySearchCountDesc()
+        return searchKeywordRepository.getPopularKeyword()
     }
 }

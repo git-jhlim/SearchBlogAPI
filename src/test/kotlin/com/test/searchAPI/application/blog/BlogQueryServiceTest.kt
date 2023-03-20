@@ -6,7 +6,6 @@ import com.test.searchAPI.domain.kakao.KakaoSearchDomainService
 import com.test.searchAPI.domain.kakao.model.KakaoBlog
 import com.test.searchAPI.domain.kakao.model.KakaoSearchResponse
 import com.test.searchAPI.domain.keyword.KeywordDomainService
-import com.test.searchAPI.domain.keyword.entity.PopularKeyword
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.context.ApplicationEventPublisher
 import java.time.LocalDateTime
-import java.util.Random
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 @ExtendWith(MockKExtension::class)
@@ -25,9 +23,6 @@ class BlogQueryServiceTest {
 
     @MockK
     lateinit var kakaoSearchDomainService: KakaoSearchDomainService
-
-    @MockK
-    lateinit var keywordDomainService: KeywordDomainService
 
     @MockK
     lateinit var applicationEventPublisher: ApplicationEventPublisher
