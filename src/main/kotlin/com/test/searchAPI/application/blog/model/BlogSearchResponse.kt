@@ -25,10 +25,10 @@ data class BlogSearchResponse (
         fun of(blog: NaverBlog): BlogSearchResponse {
             return BlogSearchResponse(
                 blogName = blog.bloggername,
-                title = blog.title.toRemoveHtml(),
+                title = blog.title,
                 thumbnail = "",
                 blogUrl = blog.link,
-                contentSummary = blog.description.toRemoveHtml(),
+                contentSummary = blog.description,
                 registerDateTime = blog.postdate.atStartOfDay(),
             )
         }
