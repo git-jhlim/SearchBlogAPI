@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @Component
 class CustomErrorAttributes: ErrorAttributes {
 
-    override fun getErrorAttributes(request: ServerRequest, options: ErrorAttributeOptions?): MutableMap<String, Any> {
+    override fun getErrorAttributes(request: ServerRequest, options: ErrorAttributeOptions): MutableMap<String, Any> {
         val error = getError(request)
         val status = getHttpStatus(error)
         val errorResponse = getErrorResponse(error)
@@ -33,18 +33,22 @@ class CustomErrorAttributes: ErrorAttributes {
                 this["detail"] = errorResponse.detail
             }
 
-//        if (!options.isIncluded(Include.EXCEPTION)) {
-//            errorAttributes.remove("exception");
-//        }
-//        if (!options.isIncluded(Include.STACK_TRACE)) {
-//            errorAttributes.remove("trace");
-//        }
-//        if (!options.isIncluded(Include.MESSAGE) && errorAttributes.get("message") != null) {
-//            errorAttributes.remove("message");
-//        }
-//        if (!options.isIncluded(Include.BINDING_ERRORS)) {
-//            errorAttributes.remove("errors");
-//        }
+        if (options.isIncluded(ErrorAttributeOptions.Include.EXCEPTION)) {
+            errorAttributes.remove("exception");
+        }
+
+        if (options.isIncluded(ErrorAttributeOptions.Include.STACK_TRACE)) {
+            errorAttributes.remove("trace");
+        }
+
+        if (options.isIncluded(ErrorAttributeOptions.Include.MESSAGE) && errorAttributes["message"] != null) {
+            errorAttributes.remove("message");
+        }
+
+        if (options.isIncluded(ErrorAttributeOptions.Include.BINDING_ERRORS)) {
+            errorAttributes.remove("errors");
+        }
+
         return errorAttributes
     }
 
