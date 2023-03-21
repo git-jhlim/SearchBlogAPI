@@ -13,6 +13,7 @@ import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
+import kotlin.math.ceil
 
 @Service
 /**
@@ -26,9 +27,14 @@ class NaverSearchDomainService(
     suspend fun searchBlog(params: NaverBlogSearchParams): BlogPageResponse<NaverBlog> {
         return getMonoResult<NaverSearchResponse<NaverBlog>>(properties.getBlogSearchUri(params.toMap()))
             .let {
+                val totalPages = ceil((it.total.toDouble()) / (params.display.toDouble())).toInt()
                 BlogPageResponse(
                     page = it.start,
+                    pageSize = params.display,
+                    totalPages = totalPages,
                     totalCount = it.total,
+                    hasNext = it.start < totalPages,
+                    hasPrevious = it.start > 1,
                     contents = it.items,
                     baseOn = SearchBaseType.NAVER,
                 )

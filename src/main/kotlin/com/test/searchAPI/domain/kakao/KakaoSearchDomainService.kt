@@ -14,6 +14,7 @@ import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientResponseException
+import kotlin.math.ceil
 
 /**
  * 카카오 블로그 검색
@@ -27,10 +28,16 @@ class KakaoSearchDomainService(
     suspend fun searchBlog(params: KakaoBlogSearchParams): BlogPageResponse<KakaoBlog> {
         return getMonoResult<KakaoSearchResponse<KakaoBlog>>(properties.getBlogSearchUri(params.toMap()))
             .let {
+                val totalPages = ceil((it.meta.total_count.toDouble()) / (params.size.toDouble())).toInt()
+
                 BlogPageResponse(
                     totalCount = it.meta.total_count,
                     page = params.page,
                     contents = it.documents,
+                    pageSize = params.size,
+                    totalPages = totalPages,
+                    hasNext = params.page < totalPages,
+                    hasPrevious = params.page > 1,
                     baseOn = SearchBaseType.KAKAO,
                 )
             }

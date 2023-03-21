@@ -11,6 +11,10 @@ val kakaoSearchResult = BlogPageResponse(
     baseOn = SearchBaseType.KAKAO,
     page = 1,
     totalCount = 1,
+    hasNext = false,
+    hasPrevious = false,
+    pageSize = 10,
+    totalPages = 1,
     contents = listOf(
         KakaoBlog(
             title = "2월 13일 블챌",
@@ -27,6 +31,10 @@ val naverSearchResult = BlogPageResponse(
     baseOn = SearchBaseType.NAVER,
     page = 1,
     totalCount = 1,
+    hasNext = false,
+    hasPrevious = false,
+    pageSize = 10,
+    totalPages = 1,
     contents = listOf(
         NaverBlog(
             bloggername = "순자",
