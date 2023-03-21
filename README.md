@@ -14,3 +14,5 @@
 ### Query DSL
 * 인기 검색어 목록 조회 시, Spring JPA 로 구현하기 다소 복잡하여 queryDSL 사용
 
+jar 다운로드 경로 : https://github.com/git-jhlim/pre-assignment/blob/main/build/libs/searchAPI-0.0.1-SNAPSHOT.jar
+
