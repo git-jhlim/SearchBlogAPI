@@ -5,13 +5,12 @@ import org.springframework.boot.context.properties.bind.ConstructorBinding
 import org.springframework.util.MultiValueMap
 import org.springframework.web.util.UriComponentsBuilder
 
-
-
-@ConfigurationProperties(prefix = "kakao.api")
-data class KakaoApiProperties @ConstructorBinding constructor(
+@ConfigurationProperties(prefix = "naver.api")
+class NaverApiProperties @ConstructorBinding constructor(
     val protocol: String,
     val host: String,
-    private val appkey: String,
+    val clientId: String,
+    val clientSecret: String,
     val blogSearch: ApiPath,
 ) {
     fun getBlogSearchUri(params: MultiValueMap<String, String>): String {
@@ -23,11 +22,4 @@ data class KakaoApiProperties @ConstructorBinding constructor(
             .build()
             .toUriString()
     }
-
-    fun getAppkey() = "$KAKAO_AUTH_HEADER $appkey"
-    companion object {
-        private const val KAKAO_AUTH_HEADER = "KakaoAK"
-    }
 }
-
-data class ApiPath(val path: String)

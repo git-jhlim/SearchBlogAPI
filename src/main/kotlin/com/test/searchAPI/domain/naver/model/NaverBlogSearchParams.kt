@@ -1,13 +1,13 @@
-package com.test.searchAPI.domain.kakao.model
+package com.test.searchAPI.domain.naver.model
 
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 
-data class BlogSearchParams (
+data class NaverBlogSearchParams(
     val query: String,
+    val display: Int,
+    val start: Int,
     val sort: String,
-    val page: Int,
-    val size: Int,
 ) {
     fun toMap(): MultiValueMap<String, String> {
         val queryParamMap = LinkedMultiValueMap<String,String>()

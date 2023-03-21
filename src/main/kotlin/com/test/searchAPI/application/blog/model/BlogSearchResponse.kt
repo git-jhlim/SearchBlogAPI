@@ -1,6 +1,7 @@
 package com.test.searchAPI.application.blog.model
 
 import com.test.searchAPI.domain.kakao.model.KakaoBlog
+import com.test.searchAPI.domain.naver.model.NaverBlog
 import java.time.LocalDateTime
 
 data class BlogSearchResponse (
@@ -20,5 +21,21 @@ data class BlogSearchResponse (
             contentSummary = blog.contents,
             registerDateTime = blog.datetime,
         )
+
+        fun of(blog: NaverBlog): BlogSearchResponse {
+            return BlogSearchResponse(
+                blogName = blog.bloggername,
+                title = blog.title.toRemoveHtml(),
+                thumbnail = "",
+                blogUrl = blog.link,
+                contentSummary = blog.description.toRemoveHtml(),
+                registerDateTime = blog.postdate.atStartOfDay(),
+            )
+        }
+
+        private fun String.toRemoveHtml(): String {
+            val regex = "<(/)?b>".toRegex()
+            return replace(regex, "")
+        }
     }
 }

@@ -23,6 +23,14 @@ kakao:
     appkey: e311f29c3b111e7c0539b3f9be6caea0
     blogSearch:
       path: /v2/search/blog
+naver:
+  api:
+    protocol: https
+    host: openapi.naver.com
+    clientId: Xw9uSAjUhAkshle7zPiV
+    clientSecret: kOrs51BA6i
+    blogSearch:
+      path: /v1/search/blog.json
 
 logging:
   level:
