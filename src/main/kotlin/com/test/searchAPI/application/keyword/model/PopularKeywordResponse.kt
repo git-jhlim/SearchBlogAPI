@@ -8,6 +8,7 @@ data class PopularKeywordResponse (
     val searchCount: Long,
 ) {
     companion object {
-        fun of(index: Int, keyword: PopularKeyword) = PopularKeywordResponse(index, keyword.keyword, keyword.searchCount)
+        fun of(index: Int, keyword: PopularKeyword)
+        = PopularKeywordResponse(index+1, keyword.keyword, keyword.searchCount)
     }
 }

@@ -3,7 +3,10 @@ package com.test.searchAPI.domain.keyword.entity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-@Table(name = "user_search_keyword_history")
+@Table(
+    name = "user_search_keyword_history",
+    indexes = [ Index(name = "idx_keyword_no", columnList = "keyword_no") ]
+)
 @Entity
 class KeywordHistory (
     @Id

@@ -15,7 +15,6 @@ class BlogHandler(
 ) {
     suspend fun searchBlog(request: ServerRequest): ServerResponse {
         val keyword = request.queryParamOrThrow("keyword")
-        val url = request.queryParamOrNull("url")
         val sorting = request.queryParamOrNull("sorting")
             ?.let {
                 BlogSearchSort.getBy(it) ?: throw InvalidParameterException("sorting")
@@ -23,7 +22,7 @@ class BlogHandler(
         val page = request.queryParamToIntOrNull("page")
         val size = request.queryParamToIntOrNull("size")
 
-        val param = BlogSearchRequest.of(keyword, url, sorting, page, size)
+        val param = BlogSearchRequest.of(keyword, sorting, page, size)
             .also { it.valid() }
         return ServerResponse.ok().bodyValueAndAwait(
             blogQueryService.searchBlog(param.toBlogSearchModel())

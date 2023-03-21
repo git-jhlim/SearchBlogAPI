@@ -9,6 +9,7 @@ enum class BlogErrorCode(
 ): ErrorCode {
     PAGE_HAS_INVALID_NUMBER("BECD0001", "blogErrorCode.pageHasInvalidNumber"),
     SIZE_HAS_INVALID_NUMBER("BECD0002", "blogErrorCode.sizeHasInvalidNumber"),
+    INVALID_KEYWORD_LENGTH("BECD0003", "blogErrorCode.invalidKeywordLength"),
     ;
 
     override fun getMessage(arg: String?): String {
