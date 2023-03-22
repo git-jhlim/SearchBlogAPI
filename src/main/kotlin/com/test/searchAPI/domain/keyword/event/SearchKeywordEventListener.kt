@@ -28,7 +28,7 @@ class SearchKeywordEventListener(
         runBlocking {
             mutex.withLock {
                 LocalCacheManager.getValue(CacheType.KEYWORD, event.keyword) {
-                    withContext(Dispatchers.IO) {/////
+                    withContext(Dispatchers.IO) {
                         searchKeywordRepository.findByKeyword(it)
                             ?: searchKeywordRepository.save(SearchKeyword(keyword = it))
                     }

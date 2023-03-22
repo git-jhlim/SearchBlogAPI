@@ -7,6 +7,7 @@ import com.test.searchAPI.common.model.BlogPageResponse
 import com.test.searchAPI.domain.kakao.KakaoSearchDomainService
 import com.test.searchAPI.domain.keyword.event.SearchKeywordEvent
 import com.test.searchAPI.domain.naver.NaverSearchDomainService
+import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
@@ -16,6 +17,8 @@ class BlogQueryService(
     private val applicationEventPublisher: ApplicationEventPublisher,
     private val naverSearchDomainService: NaverSearchDomainService,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     suspend fun searchBlog(searchModel: BlogSearchModel): BlogPageResponse<BlogSearchResponse> {
         applicationEventPublisher.publishEvent(SearchKeywordEvent(searchModel.keyword))
 
@@ -26,6 +29,7 @@ class BlogQueryService(
             when(ex) {
                 is CommonException -> throw ex
                 else -> {
+                    logger.info("[kakaoSearchDomainService.searchBlog] Exception throw", ex)
                     naverSearchDomainService.searchBlog(searchModel.toNaverBlogSearchParams())
                         .let { result -> BlogPageResponse.convert(result) { BlogSearchResponse.of(it) } }
                 }
