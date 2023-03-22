@@ -20,7 +20,9 @@ data class BlogSearchModel (
     fun toNaverBlogSearchParams() = NaverBlogSearchParams(
         query = keyword,
         sort = sorting.naver.value,
-        start = page,
+        start = getOffset(),
         display = size,
     )
+
+    private fun getOffset() = 1 + (page - 1) * size
 }

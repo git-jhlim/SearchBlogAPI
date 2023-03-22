@@ -2,7 +2,7 @@ package com.test.searchAPI.application.blog
 
 import com.test.searchAPI.application.blog.model.BlogSearchModel
 import com.test.searchAPI.application.blog.model.BlogSearchResponse
-import com.test.searchAPI.common.exception.CommonException
+import com.test.searchAPI.common.exception.BadRequestException
 import com.test.searchAPI.common.model.BlogPageResponse
 import com.test.searchAPI.domain.kakao.KakaoSearchDomainService
 import com.test.searchAPI.domain.keyword.event.SearchKeywordEvent
@@ -27,9 +27,9 @@ class BlogQueryService(
                 .let { result -> BlogPageResponse.convert(result) { BlogSearchResponse.of(it) } }
         }.getOrElse {ex ->
             when(ex) {
-                is CommonException -> throw ex
+                is BadRequestException -> throw ex
                 else -> {
-                    logger.info("[kakaoSearchDomainService.searchBlog] Exception throw", ex)
+                    logger.info("[kakaoSearchDomainService.searchBlog] Exception throw")
                     naverSearchDomainService.searchBlog(searchModel.toNaverBlogSearchParams())
                         .let { result -> BlogPageResponse.convert(result) { BlogSearchResponse.of(it) } }
                 }

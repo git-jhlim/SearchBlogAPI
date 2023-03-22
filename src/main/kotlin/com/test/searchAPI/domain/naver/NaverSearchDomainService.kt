@@ -29,8 +29,8 @@ class NaverSearchDomainService(
             .let {
                 val totalPages = ceil((it.total.toDouble()) / (params.display.toDouble())).toInt()
                 BlogPageResponse(
-                    page = it.start,
-                    pageSize = params.display,
+                    page = (it.start/it.display) + 1,
+                    pageSize = it.display,
                     totalPages = totalPages,
                     totalCount = it.total,
                     hasNext = it.start < totalPages,

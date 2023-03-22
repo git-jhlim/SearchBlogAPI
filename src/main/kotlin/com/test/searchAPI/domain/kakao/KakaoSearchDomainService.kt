@@ -28,10 +28,10 @@ class KakaoSearchDomainService(
     suspend fun searchBlog(params: KakaoBlogSearchParams): BlogPageResponse<KakaoBlog> {
         return getMonoResult<KakaoSearchResponse<KakaoBlog>>(properties.getBlogSearchUri(params.toMap()))
             .let {
-                val totalPages = ceil((it.meta.total_count.toDouble()) / (params.size.toDouble())).toInt()
+                val totalPages = ceil((it.meta.pageable_count.toDouble()) / (params.size.toDouble())).toInt()
 
                 BlogPageResponse(
-                    totalCount = it.meta.total_count,
+                    totalCount = it.meta.pageable_count,
                     page = params.page,
                     contents = it.documents,
                     pageSize = params.size,
@@ -53,7 +53,8 @@ class KakaoSearchDomainService(
             .doOnError {
                 when (it) {
                     is WebClientResponseException -> {
-                        if (it.statusCode.is5xxServerError)  throw it
+                        if (it.statusCode.is5xxServerError)
+                            throw it
 
                         if (it.statusCode.is4xxClientError) {
                             throw BadRequestException(
